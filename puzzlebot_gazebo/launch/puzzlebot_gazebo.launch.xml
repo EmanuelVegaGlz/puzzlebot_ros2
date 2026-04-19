@@ -11,6 +11,11 @@
 
     <arg name="use_sim_time" default="true"/>
     <arg name="headless" default="false"/>
+    <arg name="gz_partition" default="$(anon puzzlebot_gz_partition)"/>
+
+    <!-- Isolate Gazebo transport topics per launch run to avoid stale cross-run /clock and /tf data. -->
+    <set_env name="IGN_PARTITION" value="$(var gz_partition)"/>
+    <set_env name="GZ_PARTITION" value="$(var gz_partition)"/>
 
     <!-- Gazebo con GUI -->
     <include if="$(not $(var headless))" file="$(var gz_sim_launch_path)">
