@@ -13,39 +13,31 @@
     <arg name="headless" default="false"/>
     <arg name="gz_partition" default="$(anon puzzlebot_gz_partition)"/>
 
-    <!-- Isolate Gazebo transport topics per launch run to avoid stale cross-run /clock and /tf data. -->
     <set_env name="IGN_PARTITION" value="$(var gz_partition)"/>
     <set_env name="GZ_PARTITION" value="$(var gz_partition)"/>
 
-    <!-- Gazebo con GUI -->
     <include if="$(not $(var headless))" file="$(var gz_sim_launch_path)">
         <arg name="gz_args" value="$(var world) -r"/>
     </include>
 
-    <!-- Gazebo sin GUI -->
     <include if="$(var headless)" file="$(var gz_sim_launch_path)">
         <arg name="gz_args" value="$(var world) -r -s"/>
     </include>
 
-    <!-- Robot description -->
     <include file="$(var puzzlebot_description_path)">
         <arg name="use_sim_time" value="$(var use_sim_time)"/>
     </include>
 
-    <!-- Spawn maze model into the empty world -->
     <node pkg="ros_gz_sim" exec="create" output="screen"
           args="-name maze_walls -file $(var maze_model_path)"/>
 
-    <!-- Spawn robot -->
     <node pkg="ros_gz_sim" exec="create" output="screen"
           args="-name puzzlebot -topic robot_description -x $(var x_pose) -y $(var y_pose) -z 0.01 -Y 3.1416"/>
 
-    <!-- Bridge -->
     <node pkg="ros_gz_bridge" exec="parameter_bridge" output="screen">
         <param name="config_file" value="$(var puzzlebot_bridge_config_path)"/>
     </node>
 
-    <!-- Align Gazebo lidar frame naming with the robot TF tree -->
     <node pkg="tf2_ros" exec="static_transform_publisher" output="screen"
           args="0.08 0 0.15 0 0 0 base_footprint puzzlebot/base_footprint/laser"/>
 
