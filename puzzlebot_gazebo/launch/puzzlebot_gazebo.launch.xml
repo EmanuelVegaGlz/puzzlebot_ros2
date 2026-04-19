@@ -1,30 +1,38 @@
 <launch>
-    <let name="world" value="$(find-pkg-share puzzlebot_gazebo)/worlds/maze_world.world"/>
-    <let name="puzzlebot_description_path" 
-        value="$(find-pkg-share puzzlebot_description)/launch/puzzlebot_description.launch.xml"/>
-    <let name="gazebo_bridge_config_path" 
-        value="$(find-pkg-share puzzlebot_gazebo)/config/gazebo_bridge.yaml"/>
-    <let name="x_pose" value="1.35" />
-    <let name="y_pose" value="0.0" />
-    <arg name="use_sim_time" default="true" />
+
+    <let name="world" value="$(find-pkg-share puzzlebot_gazebo)/worlds/maze_world.world/model.sdf"/>
+    <let name="puzzlebot_description_path" value="$(find-pkg-share puzzlebot_description)/launch/puzzlebot_description.launch.xml"/>
+    <let name="puzzlebot_bridge_config_path" value="$(find-pkg-share puzzlebot_gazebo)/config/gazebo_bridge.yaml"/>
+    <let name="gz_sim_launch_path" value="$(find-pkg-share ros_gz_sim)/launch/gz_sim.launch.py"/>
+
+    <let name="x_pose" value="1.35"/>
+    <let name="y_pose" value="0.0"/>
+
+    <arg name="use_sim_time" default="true"/>
     <arg name="headless" default="false"/>
 
-    <include if="$(not $(var headless))" file="$(find-pkg-share gazebo_ros_gz_sim)/launch/gz_sim.launch.py">
+    <!-- Gazebo con GUI -->
+    <include if="$(not $(var headless))" file="$(var gz_sim_launch_path)">
         <arg name="gz_args" value="$(var world) -r"/>
     </include>
 
-    <include if="$(var headless)" file="$(find-pkg-share gazebo_ros_gz_sim)/launch/gz_sim.launch.py">
+    <!-- Gazebo sin GUI -->
+    <include if="$(var headless)" file="$(var gz_sim_launch_path)">
         <arg name="gz_args" value="$(var world) -r -s"/>
     </include>
 
+    <!-- Robot description -->
     <include file="$(var puzzlebot_description_path)">
-        <arg name="use_sim_time" value="$(var use_sim_time) "/>
+        <arg name="use_sim_time" value="$(var use_sim_time)"/>
     </include>
 
-    <node pkg="ms_gz_sim" exec="create" output="screen" args="-name puzzlebot -topic robot_description -x $(var x_pose) -y $(var y_pose) -z 0.01 -Y 3.1416"/>
-            
+    <!-- Spawn robot -->
+    <node pkg="ros_gz_sim" exec="create" output="screen"
+          args="-name puzzlebot -topic robot_description -x $(var x_pose) -y $(var y_pose) -z 0.01 -Y 3.1416"/>
 
+    <!-- Bridge -->
     <node pkg="ros_gz_bridge" exec="parameter_bridge" output="screen">
-       <param name="config_file" value="$(var gazebo_bridge_config_path)"/>
+        <param name="config_file" value="$(var puzzlebot_bridge_config_path)"/>
     </node>
+
 </launch>

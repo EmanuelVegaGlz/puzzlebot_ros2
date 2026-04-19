@@ -7,7 +7,7 @@
     <arg name="headless" default="false" />
     <arg name="slam_params_file" default="$(find-pkg-share puzzlebot_navigation2)/config/slam_toolbox.yaml" />
 
-    <include file="$(var puzzlebot_gazebo_launch_path)" >
+    <include file="$(var puzzlebot_gazebo_launch)" >
         <arg name="headless" value="$(var headless)" />
     </include>
 
