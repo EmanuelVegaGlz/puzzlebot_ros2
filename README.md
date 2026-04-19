@@ -289,3 +289,10 @@ pkill -f "gz sim|ign gazebo"
 - Primary entry points:
   - `ros2 launch puzzlebot_navigation2 slam.launch.xml`
   - `ros2 launch puzzlebot_navigation2 nav2.launch.xml`
+
+## Team Bremdial
+
+- Brisa Itzel Reyes Castro
+- Emanuel Josue Vega Gonzalez
+- Diego Quezada Colorado
+- Aldrick Victor Tadeo Arellano
