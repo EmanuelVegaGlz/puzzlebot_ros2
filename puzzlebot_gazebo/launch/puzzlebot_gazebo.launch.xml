@@ -1,5 +1,5 @@
 <launch>
-    <let name="world" value="$(find-pkg-share puzzlebot_gazebo)/worlds/maze.world"/>
+    <let name="world" value="$(find-pkg-share puzzlebot_gazebo)/worlds/maze_world.world"/>
     <let name="puzzlebot_description_path" 
         value="$(find-pkg-share puzzlebot_description)/launch/puzzlebot_description.launch.xml"/>
     <let name="gazebo_bridge_config_path" 
