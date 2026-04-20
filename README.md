@@ -83,7 +83,6 @@ Key contents:
   - `config/nav2_params.yaml`
 - Maps:
   - `maps/map_maze.yaml` + `maps/map_maze.pgm`
-  - `maps/my_maze.yaml` + `maps/my_maze.pgm`
 - RViz:
   - `rviz/slam.rviz`
   - `rviz/nav2.rviz`
@@ -169,7 +168,35 @@ Launch:
 ```bash
 source /opt/ros/humble/setup.bash
 source ~/puzzlebot_ros2/install/setup.bash
-ros2 launch puzzlebot_navigation2 slam.launch.xml launch_teleop:=true
+ros2 launch puzzlebot_navigation2 slam.launch.xml launch_teleop:=true teleop_speed:=0.12 teleop_turn:=0.20
+```
+
+Headless option:
+
+```bash
+ros2 launch puzzlebot_navigation2 slam.launch.xml headless:=true launch_rviz:=false launch_teleop:=false
+```
+
+DiffDrive TF A/B test option:
+
+```bash
+# A) Default path: Gazebo DiffDrive publishes /tf
+ros2 launch puzzlebot_navigation2 slam.launch.xml \
+  headless:=true launch_rviz:=false launch_teleop:=false \
+  bridge_diffdrive_tf:=true publish_odom_tf_from_odom:=false
+
+# B) Alternative path: disable Gazebo /tf bridge and publish odom->base_footprint from /odom
+ros2 launch puzzlebot_navigation2 slam.launch.xml \
+  headless:=true launch_rviz:=false launch_teleop:=false \
+  bridge_diffdrive_tf:=false publish_odom_tf_from_odom:=true odom_tf_smoothing_alpha:=1.0
+
+# C) Force normalized scan frame for SLAM input (laser_link)
+ros2 launch puzzlebot_navigation2 slam.launch.xml \
+  headless:=true launch_rviz:=false launch_teleop:=false \
+  bridge_diffdrive_tf:=false publish_odom_tf_from_odom:=true odom_tf_smoothing_alpha:=0.6 \
+  normalize_scan_frame:=true slam_scan_topic:=/scan_aligned \
+  normalized_scan_topic:=/scan_aligned normalized_scan_frame_id:=laser_link \
+  normalized_scan_restamp:=true
 ```
 
 What this phase launches:
@@ -188,15 +215,15 @@ How to operate:
 Save a map:
 
 ```bash
-ros2 run nav2_map_server map_saver_cli -f ~/puzzlebot_ros2/puzzlebot_navigation2/maps/my_maze
+ros2 run nav2_map_server map_saver_cli -f ~/puzzlebot_ros2/puzzlebot_navigation2/maps/map_maze
 ```
 
 This generates:
 
-- `my_maze.pgm`
-- `my_maze.yaml`
+- `map_maze.pgm`
+- `map_maze.yaml`
 
-You can then use this map in Phase 2 with `map_path:=.../my_maze.yaml`.
+You can then use this map in Phase 2 with `map_path:=.../map_maze.yaml`.
 
 ### Phase 2: Localization + Navigation (Nav2)
 
@@ -212,11 +239,17 @@ source ~/puzzlebot_ros2/install/setup.bash
 ros2 launch puzzlebot_navigation2 nav2.launch.xml
 ```
 
+Headless option:
+
+```bash
+ros2 launch puzzlebot_navigation2 nav2.launch.xml headless:=true launch_rviz:=false
+```
+
 Optional map override:
 
 ```bash
 ros2 launch puzzlebot_navigation2 nav2.launch.xml \
-  map_path:=~/puzzlebot_ros2/puzzlebot_navigation2/maps/my_maze.yaml
+  map_path:=~/puzzlebot_ros2/puzzlebot_navigation2/maps/map_maze.yaml
 ```
 
 What this phase launches:

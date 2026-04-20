@@ -6,19 +6,41 @@
     <arg name="use_sim_time" default="true" />
     <arg name="headless" default="false" />
     <arg name="slam_params_file" default="$(find-pkg-share puzzlebot_navigation2)/config/slam_toolbox.yaml" />
+    <arg name="launch_rviz" default="true" />
     <arg name="launch_teleop" default="false" />
     <arg name="teleop_use_xterm" default="false" />
+    <arg name="teleop_speed" default="0.12" />
+    <arg name="teleop_turn" default="0.20" />
+    <arg name="slam_scan_topic" default="/scan" />
+    <arg name="normalize_scan_frame" default="false" />
+    <arg name="normalized_scan_topic" default="/scan_aligned" />
+    <arg name="normalized_scan_frame_id" default="laser_link" />
+    <arg name="normalized_scan_restamp" default="false" />
+    <arg name="bridge_diffdrive_tf" default="true" />
+    <arg name="publish_odom_tf_from_odom" default="false" />
+    <arg name="odom_tf_smoothing_alpha" default="1.0" />
 
     <include file="$(var puzzlebot_gazebo_launch)" >
         <arg name="headless" value="$(var headless)" />
+        <arg name="bridge_diffdrive_tf" value="$(var bridge_diffdrive_tf)" />
     </include>
 
     <include file="$(var slam_core_launch_path)" >
         <arg name="slam_params_file" value="$(var slam_params_file)" />
         <arg name="rviz_config_path" value="$(var slam_rviz_config_path)" />
+        <arg name="launch_rviz" value="$(var launch_rviz)" />
         <arg name="use_sim_time" value="$(var use_sim_time)" />
         <arg name="launch_teleop" value="$(var launch_teleop)" />
         <arg name="teleop_use_xterm" value="$(var teleop_use_xterm)" />
+        <arg name="teleop_speed" value="$(var teleop_speed)" />
+        <arg name="teleop_turn" value="$(var teleop_turn)" />
+        <arg name="slam_scan_topic" value="$(var slam_scan_topic)" />
+        <arg name="normalize_scan_frame" value="$(var normalize_scan_frame)" />
+        <arg name="normalized_scan_topic" value="$(var normalized_scan_topic)" />
+        <arg name="normalized_scan_frame_id" value="$(var normalized_scan_frame_id)" />
+        <arg name="normalized_scan_restamp" value="$(var normalized_scan_restamp)" />
+        <arg name="publish_odom_tf_from_odom" value="$(var publish_odom_tf_from_odom)" />
+        <arg name="odom_tf_smoothing_alpha" value="$(var odom_tf_smoothing_alpha)" />
     </include>
     
 

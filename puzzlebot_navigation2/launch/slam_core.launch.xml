@@ -1,19 +1,52 @@
 <launch>
     <arg name="slam_params_file" default="$(find-pkg-share puzzlebot_navigation2)/config/slam_toolbox.yaml" />
     <arg name="rviz_config_path" default="$(find-pkg-share puzzlebot_navigation2)/rviz/slam.rviz" />
+    <arg name="launch_rviz" default="true" />
     <arg name="use_sim_time" default="true" />
     <arg name="launch_teleop" default="false" />
     <arg name="teleop_use_xterm" default="false" />
+    <arg name="teleop_speed" default="0.12" />
+    <arg name="teleop_turn" default="0.20" />
+    <arg name="slam_scan_topic" default="/scan" />
+    <arg name="normalize_scan_frame" default="false" />
+    <arg name="normalized_scan_topic" default="/scan_aligned" />
+    <arg name="normalized_scan_frame_id" default="laser_link" />
+    <arg name="normalized_scan_restamp" default="false" />
+    <arg name="publish_odom_tf_from_odom" default="false" />
+    <arg name="odom_tf_smoothing_alpha" default="1.0" />
 
     <node pkg="slam_toolbox" exec="async_slam_toolbox_node"
           name="slam_toolbox" output="screen">
         <param name="use_sim_time" value="$(var use_sim_time)" />
         <param from="$(var slam_params_file)" />
+        <param name="scan_topic" value="$(var slam_scan_topic)" />
+        <remap from="/scan" to="$(var slam_scan_topic)" />
+    </node>
+
+    <node pkg="puzzlebot_navigation2" exec="scan_frame_normalizer.py"
+          name="scan_frame_normalizer" output="screen"
+          if="$(var normalize_scan_frame)">
+        <param name="use_sim_time" value="$(var use_sim_time)" />
+        <param name="input_topic" value="/scan" />
+        <param name="output_topic" value="$(var normalized_scan_topic)" />
+        <param name="output_frame_id" value="$(var normalized_scan_frame_id)" />
+        <param name="restamp_with_now" value="$(var normalized_scan_restamp)" />
     </node>
 
     <node pkg="rviz2" exec="rviz2" name="rviz2"
-          output="screen" args="-d $(var rviz_config_path)">
+          output="screen" args="-d $(var rviz_config_path)" if="$(var launch_rviz)">
         <param name="use_sim_time" value="$(var use_sim_time)" />
+    </node>
+
+    <node pkg="puzzlebot_navigation2" exec="odom_tf_from_odom.py"
+          name="odom_tf_from_odom" output="screen"
+          if="$(var publish_odom_tf_from_odom)">
+        <param name="use_sim_time" value="$(var use_sim_time)" />
+        <param name="odom_topic" value="/odom" />
+        <param name="parent_frame" value="odom" />
+        <param name="child_frame" value="base_footprint" />
+        <param name="use_odom_header_frames" value="true" />
+        <param name="smoothing_alpha" value="$(var odom_tf_smoothing_alpha)" />
     </node>
 
     <group if="$(var launch_teleop)">
@@ -23,6 +56,8 @@
               output="screen"
               if="$(not $(var teleop_use_xterm))">
             <param name="use_sim_time" value="$(var use_sim_time)" />
+            <param name="speed" value="$(var teleop_speed)" />
+            <param name="turn" value="$(var teleop_turn)" />
         </node>
 
         <node pkg="teleop_twist_keyboard"
@@ -32,6 +67,8 @@
               if="$(var teleop_use_xterm)"
               launch-prefix="xterm -e">
             <param name="use_sim_time" value="$(var use_sim_time)" />
+            <param name="speed" value="$(var teleop_speed)" />
+            <param name="turn" value="$(var teleop_turn)" />
         </node>
     </group>
 

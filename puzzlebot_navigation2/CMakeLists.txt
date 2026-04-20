@@ -23,8 +23,14 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-install(DIRECTORY launch config
+install(DIRECTORY launch config maps rviz
   DESTINATION share/${PROJECT_NAME}
+)
+
+install(PROGRAMS
+  scripts/odom_tf_from_odom.py
+  scripts/scan_frame_normalizer.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()

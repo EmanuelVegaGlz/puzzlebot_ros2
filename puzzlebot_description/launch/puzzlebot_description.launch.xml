@@ -5,8 +5,8 @@
     <arg name="use_sim_time" default="false"/>
 
     <let name="urdf_path" value="$(find-pkg-share puzzlebot_description)/urdf/puzzlebot.urdf"/>
-    <let name="rviz_config_path" value="$(find-pkg-share puzzlebot_description)/rviz/puzzlebot_description.rviz"/>
-    <let name="gazebo_path" value="$(find-pkg-share puzzlebot_description)/launch/gz_sim.launch.py"/>
+    <let name="rviz_config_path" value="$(find-pkg-share puzzlebot_description)/rviz/puzzlebot_rviz.rviz"/>
+    <let name="gz_sim_launch_path" value="$(find-pkg-share ros_gz_sim)/launch/gz_sim.launch.py"/>
 
     <node pkg="robot_state_publisher" exec="robot_state_publisher">
         <param name="robot_description" value="$(command 'xacro $(var urdf_path)')"/>
@@ -21,7 +21,7 @@
     <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui"
           if="$(var joint_gui)" output="screen"/>
 
-    <include file="$(var gazebo_path)" if="$(var gazebo)">
+    <include file="$(var gz_sim_launch_path)" if="$(var gazebo)">
         <arg name="gz_args" value="empty.sdf -r"/>
     </include>
 
