@@ -20,15 +20,25 @@ class ScanFrameNormalizerNode(Node):
         self.output_frame_id = str(self.get_parameter("output_frame_id").value)
         self.restamp_with_now = bool(self.get_parameter("restamp_with_now").value)
 
-        qos = QoSProfile(
-            reliability=ReliabilityPolicy.RELIABLE,
+        # Keep the input queue short and best-effort so stale scans are dropped
+        # rather than delayed (large delay + restamping causes yaw bias in turns).
+        input_qos = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
             history=HistoryPolicy.KEEP_LAST,
-            depth=50,
+            depth=1,
             durability=DurabilityPolicy.VOLATILE,
         )
 
-        self.publisher = self.create_publisher(LaserScan, self.output_topic, qos)
-        self.subscription = self.create_subscription(LaserScan, self.input_topic, self.scan_callback, qos)
+        # Publish reliably to stay compatible with conservative subscribers.
+        output_qos = QoSProfile(
+            reliability=ReliabilityPolicy.RELIABLE,
+            history=HistoryPolicy.KEEP_LAST,
+            depth=10,
+            durability=DurabilityPolicy.VOLATILE,
+        )
+
+        self.publisher = self.create_publisher(LaserScan, self.output_topic, output_qos)
+        self.subscription = self.create_subscription(LaserScan, self.input_topic, self.scan_callback, input_qos)
 
         self.get_logger().info(
             "Normalizing scan frame from "

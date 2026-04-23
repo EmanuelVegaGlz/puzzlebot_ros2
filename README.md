@@ -181,6 +181,7 @@ DiffDrive TF A/B test option:
 
 ```bash
 # A) Default path: Gazebo DiffDrive publishes /tf
+#    and SLAM consumes normalized/restamped /scan_aligned
 ros2 launch puzzlebot_navigation2 slam.launch.xml \
   headless:=true launch_rviz:=false launch_teleop:=false \
   bridge_diffdrive_tf:=true publish_odom_tf_from_odom:=false
@@ -209,7 +210,7 @@ What this phase launches:
 How to operate:
 
 1. Use teleop terminal instructions to move through all maze corridors.
-2. In RViz, verify map is being built from `/scan` and TF is stable.
+2. In RViz, verify map is being built from `/scan_aligned` and TF is stable.
 3. Save map when finished.
 
 Save a map:

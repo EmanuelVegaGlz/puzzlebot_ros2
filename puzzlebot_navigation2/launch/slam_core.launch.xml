@@ -7,11 +7,12 @@
     <arg name="teleop_use_xterm" default="false" />
     <arg name="teleop_speed" default="0.12" />
     <arg name="teleop_turn" default="0.20" />
-    <arg name="slam_scan_topic" default="/scan" />
-    <arg name="normalize_scan_frame" default="false" />
+    <arg name="slam_scan_topic" default="/scan_aligned" />
+    <arg name="normalize_scan_frame" default="true" />
     <arg name="normalized_scan_topic" default="/scan_aligned" />
     <arg name="normalized_scan_frame_id" default="laser_link" />
     <arg name="normalized_scan_restamp" default="false" />
+    <arg name="bridge_diffdrive_tf" default="true" />
     <arg name="publish_odom_tf_from_odom" default="false" />
     <arg name="odom_tf_smoothing_alpha" default="1.0" />
 
@@ -40,7 +41,7 @@
 
     <node pkg="puzzlebot_navigation2" exec="odom_tf_from_odom.py"
           name="odom_tf_from_odom" output="screen"
-          if="$(var publish_odom_tf_from_odom)">
+          if="$(and $(var publish_odom_tf_from_odom) $(not $(var bridge_diffdrive_tf)))">
         <param name="use_sim_time" value="$(var use_sim_time)" />
         <param name="odom_topic" value="/odom" />
         <param name="parent_frame" value="odom" />
