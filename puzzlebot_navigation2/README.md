@@ -29,8 +29,6 @@ Useful args:
 - `headless:=true`
 - `launch_rviz:=false`
 - `launch_teleop:=true`
-- `normalized_scan_restamp:=true` (only for clock-jump/bag-replay issues; keep `false` for normal SLAM to avoid timestamp skew)
-- Use only one odom TF source at a time: either `bridge_diffdrive_tf:=true` or `publish_odom_tf_from_odom:=true` (not both).
 
 Save map from SLAM:
 

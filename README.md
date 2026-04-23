@@ -177,27 +177,11 @@ Headless option:
 ros2 launch puzzlebot_navigation2 slam.launch.xml headless:=true launch_rviz:=false launch_teleop:=false
 ```
 
-DiffDrive TF A/B test option:
+Optional teleop tuning:
 
 ```bash
-# A) Default path: Gazebo DiffDrive publishes /tf
-#    and SLAM consumes normalized/restamped /scan_aligned
 ros2 launch puzzlebot_navigation2 slam.launch.xml \
-  headless:=true launch_rviz:=false launch_teleop:=false \
-  bridge_diffdrive_tf:=true publish_odom_tf_from_odom:=false
-
-# B) Alternative path: disable Gazebo /tf bridge and publish odom->base_footprint from /odom
-ros2 launch puzzlebot_navigation2 slam.launch.xml \
-  headless:=true launch_rviz:=false launch_teleop:=false \
-  bridge_diffdrive_tf:=false publish_odom_tf_from_odom:=true odom_tf_smoothing_alpha:=1.0
-
-# C) Force normalized scan frame for SLAM input (laser_link)
-ros2 launch puzzlebot_navigation2 slam.launch.xml \
-  headless:=true launch_rviz:=false launch_teleop:=false \
-  bridge_diffdrive_tf:=false publish_odom_tf_from_odom:=true odom_tf_smoothing_alpha:=0.6 \
-  normalize_scan_frame:=true slam_scan_topic:=/scan_aligned \
-  normalized_scan_topic:=/scan_aligned normalized_scan_frame_id:=laser_link \
-  normalized_scan_restamp:=true
+  launch_teleop:=true teleop_speed:=0.12 teleop_turn:=0.20
 ```
 
 What this phase launches:
@@ -210,7 +194,7 @@ What this phase launches:
 How to operate:
 
 1. Use teleop terminal instructions to move through all maze corridors.
-2. In RViz, verify map is being built from `/scan_aligned` and TF is stable.
+2. In RViz, verify map is being built from `/scan` and TF is stable.
 3. Save map when finished.
 
 Save a map:
