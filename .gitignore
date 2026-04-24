@@ -6,3 +6,14 @@
 /install
 /log
 
+#Colcon metadata
+.colcon/
+.colcon_ignore
+
+#Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+
