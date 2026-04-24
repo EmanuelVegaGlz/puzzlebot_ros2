@@ -7,7 +7,7 @@
     <let name="puzzlebot_bridge_no_tf_config_path" value="$(find-pkg-share puzzlebot_gazebo)/config/gazebo_bridge_no_tf.yaml"/>
     <let name="gz_sim_launch_path" value="$(find-pkg-share ros_gz_sim)/launch/gz_sim.launch.py"/>
 
-    <let name="x_pose" value="-2.0"/>
+    <let name="x_pose" value="-1.5"/>
     <let name="y_pose" value="0.0"/>
 
     <arg name="use_sim_time" default="true"/>
