@@ -26,6 +26,8 @@
 
     <include file="$(var puzzlebot_description_path)">
         <arg name="use_sim_time" value="$(var use_sim_time)"/>
+        <arg name="rviz" value="false"/>
+        <arg name="joint_gui" value="false"/>
     </include>
 
     <node pkg="ros_gz_sim" exec="create" output="screen"
