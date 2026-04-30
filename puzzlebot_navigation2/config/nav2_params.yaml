@@ -1,6 +1,6 @@
 amcl:
   ros__parameters:
-    use_sim_timje: False
+    use_sim_time: true
     alpha1: 0.05 #relevant
     alpha2: 0.05 #relevant
     alpha3: 0.05 #relevant
@@ -284,7 +284,7 @@ planner_server:
     expected_planner_frequency: 10.0
     planner_plugins: ["GridBased"]
     GridBased:
-      plugin: "nav2_navfn_planner::NavfnPlanner"
+      plugin: "nav2_navfn_planner/NavfnPlanner"
       tolerance: 0.5
       use_astar: false
       allow_unknown: true

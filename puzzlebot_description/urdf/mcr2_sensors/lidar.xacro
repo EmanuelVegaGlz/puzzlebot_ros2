@@ -7,7 +7,7 @@
     prefix:=''
     frame_name:='laser_frame'
     parent:='base_link'
-    mesh_file:='file://$(find puzzlebot_description)/meshes/sensors/RPLidar.stl'
+    mesh_file:='file://$(find puzzlebot_description)/meshes/Puzzlebot_Caster_Wheel.stl'
 
     lidar_base_mass:='0.1755'
     lidar_base_length:='0.08'

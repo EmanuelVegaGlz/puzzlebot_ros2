@@ -38,7 +38,7 @@
             <xacro:property name="chassis_mesh_pos_w" value="0.0"/>
 
         <!--Chassis Joint parameters-->
-            <xacro:property name="chassis_pos_x" value="0.0"/>
+            <xacro:property name="chassis_pos_x" value="-0.052"/>
             <xacro:property name="chassis_pos_y" value="0.0"/>
             <xacro:property name="chassis_pos_z" value="0.05"/>
             <xacro:property name="chassis_pos_r" value="0.0"/>
@@ -193,9 +193,9 @@
 
 
     <!--Meshes -->
-        <xacro:property name="mesh_puzzlebot_chassis"  value="$(find puzzlebot_description)/meshes/bases/Puzzlebot_Jetson_Lidar_Edition_Base.stl" />
-        <xacro:property name="mesh_puzzlebot_wheel"  value="$(find puzzlebot_description)/meshes/wheels/Puzzlebot_Wheel.stl" />
-        <xacro:property name="mesh_puzzlebot_caster"  value="$(find puzzlebot_description)/meshes/wheels/Puzzlebot_Caster_Wheel.stl" /> 
-        <xacro:property name="mesh_puzzlebot_jetson"  value="$(find puzzlebot_description)/meshes/misc/NVIDIA_Jetson.stl" />
+        <xacro:property name="mesh_puzzlebot_chassis"  value="$(find puzzlebot_description)/meshes/Puzzlebot_Jetson_Lidar_Edition_Base.stl" />
+        <xacro:property name="mesh_puzzlebot_wheel"  value="$(find puzzlebot_description)/meshes/Puzzlebot_Wheel.stl" />
+        <xacro:property name="mesh_puzzlebot_caster"  value="$(find puzzlebot_description)/meshes/Puzzlebot_Caster_Wheel.stl" /> 
+        <xacro:property name="mesh_puzzlebot_jetson"  value="$(find puzzlebot_description)/meshes/Puzzlebot_Caster_Wheel.stl" />
 
 </robot>

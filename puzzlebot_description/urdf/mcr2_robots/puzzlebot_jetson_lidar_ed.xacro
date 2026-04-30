@@ -11,7 +11,7 @@
 
 <xacro:include filename="$(find puzzlebot_description)/urdf/mcr2_sensors/laser_camera_bracket.xacro" />
 <xacro:include filename="$(find puzzlebot_description)/urdf/mcr2_sensors/lidar.xacro" />
-<xacro:include filename="$(find puzzlebot_description)/urdf/mcr2_control/gazebo_control.xacro" />
+<xacro:include filename="$(find puzzlebot_description)/urdf/mcr2_control/puzzlebot_control.xacro" />
 
 <!--LINKS-->
 
