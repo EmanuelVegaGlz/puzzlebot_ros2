@@ -6,8 +6,8 @@
     <let name="puzzlebot_bridge_config_path" value="$(find-pkg-share puzzlebot_gazebo)/config/gazebo_bridge.yaml"/>
     <let name="gz_sim_launch_path" value="$(find-pkg-share ros_gz_sim)/launch/gz_sim.launch.py"/>
 
-    <let name="x_pose" value="1.35"/>
-    <let name="y_pose" value="0.0"/>
+    <let name="x_pose" value="1.5"/>
+    <let name="y_pose" value="1.1"/>
 
     <arg name="use_sim_time" default="true"/>
     <arg name="headless" default="false"/>
@@ -26,6 +26,8 @@
 
     <include file="$(var puzzlebot_description_path)">
         <arg name="use_sim_time" value="$(var use_sim_time)"/>
+        <arg name="rviz" value="false"/>
+        <arg name="joint_gui" value="false"/>
     </include>
 
     <node pkg="ros_gz_sim" exec="create" output="screen"
@@ -37,8 +39,5 @@
     <node pkg="ros_gz_bridge" exec="parameter_bridge" output="screen">
         <param name="config_file" value="$(var puzzlebot_bridge_config_path)"/>
     </node>
-
-    <node pkg="tf2_ros" exec="static_transform_publisher" output="screen"
-          args="0.08 0 0.15 0 0 0 base_footprint puzzlebot/base_footprint/laser"/>
 
 </launch>
